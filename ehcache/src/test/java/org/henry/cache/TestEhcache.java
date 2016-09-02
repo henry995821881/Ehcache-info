@@ -135,7 +135,8 @@ public class TestEhcache {
 
 		CacheManager manager = new CacheManager("resource/ehcache.xml");
 		
-		run(manager);
+		Cache cache = manager.getCache("userCache");
+		run(cache);
 
 	}
 
@@ -144,7 +145,8 @@ public class TestEhcache {
 
 		URL url = getClass().getResource("/ehcache.xml");
 		CacheManager manager = new CacheManager(url);
-		run(manager);
+		Cache cache = manager.getCache("userCache");
+		run(cache);
 	}
 
 	@Test
@@ -153,7 +155,8 @@ public class TestEhcache {
 		InputStream fis = new FileInputStream(new File("resource/ehcache.xml").getAbsolutePath());
 		try {
 			CacheManager manager = new CacheManager(fis);
-			run(manager);
+			Cache cache = manager.getCache("userCache");
+			run(cache);
 		} finally {
 			fis.close();
 		}
@@ -169,15 +172,27 @@ public class TestEhcache {
 
 		CacheManager manager = CacheManager.create();
 		
-		run(manager);
+		Cache cache = manager.getCache("userCache");
+		run(cache);
 
 	}
 	
+	@Test
+	public void test5(){
+		//manager.addCache("ccc"); 
+		//会按照defaultCache clone克隆一份cache 
+		CacheManager manager = CacheManager.create();	
+		manager.addCache("ccc");
+		Cache cache = manager.getCache("ccc");
+		
+		run(cache);
+		
+	}
+
 	
-	public void run(CacheManager manager){
+	public void run(Cache cache){
 		
-		
-		Cache cache = manager.getCache("userCache");
+			
 
 		User u = new User();
 		u.setAge(12);
